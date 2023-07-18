@@ -1,41 +1,58 @@
 <template>
-  <div class="home flex-grow-1 d-flex flex-column align-items-center justify-content-center">
-    <div class="home-card p-5 bg-white rounded elevation-3">
-      <img src="https://bcw.blob.core.windows.net/public/img/8600856373152463" alt="CodeWorks Logo"
-        class="rounded-circle">
-      <h1 class="my-5 bg-dark text-white p-3 rounded text-center">
-        Vue 3 Starter
-      </h1>
+    <div class="row">
+      <GiftForm />
+      <div class="col-9 py-5 px-3 gift-area">
+        <div v-if="gifts" class="row">
+          <div v-for="gift in gifts" :key="gift.id" class="col-3">
+            <Gift :gift="gift" />
+          </div>
+        </div>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
+import Pop from '../utils/Pop.js';
+import {giftsService} from '../services/GiftsService.js'
+import { computed, onMounted } from 'vue';
+import { AppState } from '../AppState';
+import Gift from '../components/Gift.vue';
+import GiftForm from '../components/GiftForm.vue'
+
 export default {
   setup() {
-    return {}
-  }
+
+    const _getGifts = async() => {
+      try {
+        await giftsService.getGifts()
+      } catch (error) {
+        Pop.error(error)
+      }
+    }
+
+    onMounted(() => {
+      _getGifts()
+    })
+
+    return {
+      gifts: computed(() => AppState.gifts)
+    }
+  },
+  components: { Gift, GiftForm }
 }
 </script>
 
 <style scoped lang="scss">
-.home {
-  display: grid;
-  height: 80vh;
-  place-content: center;
-  text-align: center;
-  user-select: none;
 
-  .home-card {
-    width: 50vw;
+.gift-area {
+  max-height: 95dvh;
+  overflow-y: scroll;
+  background-color: rgb(14, 14, 52);
+  color: white;
+}
 
-    >img {
-      height: 200px;
-      max-width: 200px;
-      width: 100%;
-      object-fit: contain;
-      object-position: center;
-    }
-  }
+.form-area {
+  background-color: rgb(0, 61, 0);
+  color: white;
 }
 </style>

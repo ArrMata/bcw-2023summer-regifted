@@ -2,12 +2,9 @@
   <header>
     <Navbar />
   </header>
-  <main>
+  <main class="container-fluid">
     <router-view />
   </main>
-   <footer class="bg-dark text-light">
-    Made with 💖 by CodeWorks
-  </footer>
 </template>
 
 <script>
@@ -31,10 +28,12 @@ export default {
   --main-height: calc(100vh - 32px - 64px);
 }
 
-
-footer {
-  display: grid;
-  place-content: center;
-  height: 32px;
+header {
+  height: 5dvh;
 }
+
+main {
+  height: 95dvh;
+}
+
 </style>
